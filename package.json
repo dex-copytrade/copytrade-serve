@@ -8,7 +8,7 @@
     "declarations": true
   },
   "scripts": {
-    "start": "yarn stop && yarn tsc && EGG_SERVER_ENV=prod egg-scripts start --port=7004 --daemon --title=egg-server-copytrade-serve",
+    "start": "yarn stop && yarn tsc && EGG_SERVER_ENV=prod egg-scripts start --port=7004 --workers=1 --daemon --title=egg-server-copytrade-serve",
     "stop": "egg-scripts stop --title=egg-server-copytrade-serve",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
