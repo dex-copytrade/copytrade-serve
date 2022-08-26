@@ -22,6 +22,7 @@
     "clean": "ets clean"
   },
   "dependencies": {
+    "@blockworks-foundation/mango-client": "^3.6.14",
     "egg": "^2.6.1",
     "egg-console": "^2.0.1",
     "egg-core": "^4.23.0",
