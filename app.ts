@@ -35,7 +35,7 @@ export default class FooBoot implements IBoot {
     const ctx = this.app.createAnonymousContext();
     ctx.runInBackground(async () => {
         ctx.logger.info('开始订阅 Order Book')
-        ctx.service.orderBook.subscribeToOrderBook()
+        // ctx.service.orderBook.subscribeToOrderBook()
     });
     
     // Server is listening.
