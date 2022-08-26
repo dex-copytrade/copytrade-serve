@@ -1,0 +1,13 @@
+{
+  "extends": "@eggjs/tsconfig",
+  "exclude": [
+    "app/public",
+    "app/views",
+    "node_modules*"
+  ],
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    // ... rest
+  }
+}
