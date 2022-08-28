@@ -75,15 +75,15 @@ export default class AccountTradeHistory extends Service {
             data.length,
             account.account
           );
-          await this.create(_data);
           if(data.length === 5000){
-            await sleep(30)
+            await sleep(60)
             await this.updateAccountTradeHistory({
               account: account.account,
               owner: account.owner
             }, page + 1)
 
           }
+          await this.create(_data);
         } catch (error) {
           ctx.service.lark.sendChatMessage(`账号： ${account.account} 异常：${String(error)}`)
           ctx.logger.error("updateAccountTradeHistory", error);
