@@ -17,6 +17,9 @@ interface TradeHistory {
   takerClientOrderId: string;
 }
 
+const sleep = (time) =>
+new Promise((resolve) => setTimeout(resolve, time * 1000))
+
 export default class AccountTradeHistory extends Service {
   public async create(data) {
     const { ctx } = this;
@@ -43,9 +46,9 @@ export default class AccountTradeHistory extends Service {
       return [];
     }
   }
-  public async updateAccountTradeHistory() {
+  public async updateAccountTradeHistory(acc?, page: number = 1) {
     const { ctx } = this;
-    const account = await ctx.service.trackingAccount.getOneAccount({
+    const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
       grasp: 1,
     });
     // const account = await ctx.service.trackingAccount.getOneAccount({
@@ -66,13 +69,21 @@ export default class AccountTradeHistory extends Service {
               owner: account.owner,
             };
           });
-          ctx.service.lark.sendChatMessage(`账号： ${account.account} 成功更新：${data.length} 条数据`)
+          ctx.service.lark.sendChatMessage(`账号： ${account.account} 成功更新：${data.length} 条数据 Page: ${page}`)
           ctx.logger.info(
             "updateAccountTradeHistory成功",
             data.length,
             account.account
           );
           await this.create(_data);
+          if(data.length === 5000){
+            await sleep(30)
+            await this.updateAccountTradeHistory({
+              account: account.account,
+              owner: account.owner
+            }, page + 1)
+
+          }
         } catch (error) {
           ctx.service.lark.sendChatMessage(`账号： ${account.account} 异常：${String(error)}`)
           ctx.logger.error("updateAccountTradeHistory", error);
