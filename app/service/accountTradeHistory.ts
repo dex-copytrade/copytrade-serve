@@ -18,7 +18,7 @@ interface TradeHistory {
 }
 
 const sleep = (time) =>
-new Promise((resolve) => setTimeout(resolve, time * 1000))
+  new Promise((resolve) => setTimeout(resolve, time * 1000));
 
 export default class AccountTradeHistory extends Service {
   public async create(data) {
@@ -34,7 +34,7 @@ export default class AccountTradeHistory extends Service {
     const url = `https://trade-history-api-v3.onrender.com/perp_trades/${account}`;
     const data = await ctx.service.utils.get(
       url,
-      {page},
+      { page },
       {
         "user-agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63",
@@ -48,9 +48,11 @@ export default class AccountTradeHistory extends Service {
   }
   public async updateAccountTradeHistory(acc?, page: number = 1) {
     const { ctx } = this;
-    const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
-      grasp: 1,
-    });
+    const account = acc
+      ? acc
+      : await ctx.service.trackingAccount.getOneAccount({
+          grasp: 1,
+        });
     // const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
     //   account: "AoQJZaoTePWwgvHG4MTtUZ3N9Eqkxny25vpFmJYzSAvM",
     // });
@@ -58,11 +60,12 @@ export default class AccountTradeHistory extends Service {
     if (account) {
       ctx.logger.info("updateAccountTradeHistory插入", account.account);
       const data: Array<TradeHistory> = await this.getAccountHistoryAll(
-        account.account,page
+        account.account,
+        page
       );
       if (data.length > 0) {
-         // 更新
-         ctx.service.trackingAccount.updateAccount(
+        // 更新
+        ctx.service.trackingAccount.updateAccount(
           { account: account.account },
           { grasp: 2 }
         );
@@ -74,23 +77,29 @@ export default class AccountTradeHistory extends Service {
               owner: account.owner,
             };
           });
-          ctx.service.lark.sendChatMessage(`账号： ${account.account} 成功更新：${data.length} 条数据 Page: ${page}`)
+          ctx.service.lark.sendChatMessage(
+            `账号： ${account.account} 成功更新：${data.length} 条数据 Page: ${page}`
+          );
           ctx.logger.info(
             "updateAccountTradeHistory成功",
             data.length,
             account.account
           );
-          if(data.length === 5000){
-            await sleep(60)
-            await this.updateAccountTradeHistory({
-              account: account.account,
-              owner: account.owner
-            }, page + 1)
-
+          if (data.length === 5000) {
+            await sleep(60);
+            await this.updateAccountTradeHistory(
+              {
+                account: account.account,
+                owner: account.owner,
+              },
+              page + 1
+            );
           }
           await this.create(_data);
         } catch (error) {
-          ctx.service.lark.sendChatMessage(`账号： ${account.account} 异常：${String(error)}`)
+          ctx.service.lark.sendChatMessage(
+            `账号： ${account.account} 异常：${String(error)}`
+          );
           ctx.logger.error("updateAccountTradeHistory", error);
         }
       } else {
