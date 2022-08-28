@@ -46,7 +46,7 @@ export default class AccountTradeHistory extends Service {
       return [];
     }
   }
-  public async updateAccountTradeHistory(acc?, page: number = 2) {
+  public async updateAccountTradeHistory(acc?, page: number = 1) {
     const { ctx } = this;
     // const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
     //   grasp: 1,
