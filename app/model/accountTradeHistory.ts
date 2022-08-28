@@ -40,7 +40,7 @@ export default (app) => {
   Schema.pre('save', function (next) {
     // @ts-ignore
     const _this = this;
-    _this.md5 = md5(_this.seqNum + _this.address)
+    _this.md5 = md5(_this.seqNum + _this.account + _this.address)
     next()
   })
 

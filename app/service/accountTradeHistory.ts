@@ -74,6 +74,7 @@ export default class AccountTradeHistory extends Service {
           );
           await this.create(_data);
         } catch (error) {
+          ctx.service.lark.sendChatMessage(`账号： ${account.account} 异常：${String(error)}`)
           ctx.logger.error("updateAccountTradeHistory", error);
         }
         // 更新
