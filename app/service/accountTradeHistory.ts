@@ -61,6 +61,11 @@ export default class AccountTradeHistory extends Service {
         account.account,page
       );
       if (data.length > 0) {
+         // 更新
+         ctx.service.trackingAccount.updateAccount(
+          { account: account.account },
+          { grasp: 2 }
+        );
         try {
           const _data = data.map((item) => {
             return {
@@ -88,11 +93,6 @@ export default class AccountTradeHistory extends Service {
           ctx.service.lark.sendChatMessage(`账号： ${account.account} 异常：${String(error)}`)
           ctx.logger.error("updateAccountTradeHistory", error);
         }
-        // 更新
-        await ctx.service.trackingAccount.updateAccount(
-          { account: account.account },
-          { grasp: 2 }
-        );
       } else {
         ctx.logger.info("无数据", account.account);
       }
