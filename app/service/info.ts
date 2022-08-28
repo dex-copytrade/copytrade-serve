@@ -11,10 +11,10 @@ export default class Info extends Service {
    */
   public async info() {
     const { ctx } = this;
-    const count =  await ctx.model.TrackingAccount.find().count()
+    const count =  await ctx.model.TrackingAccount.find({}).count()
     const count1 =  await ctx.model.TrackingAccount.find({grasp: 1}).count()
 
-    const count2 = await ctx.model.AccountTradeHistory.find().count();
+    const count2 = await ctx.model.AccountTradeHistory.find({}).count();
     return {
       count,
       count1,
