@@ -14,7 +14,7 @@ export default class Lark extends Service {
   public async sendChatMessage(text: string) {
     const { ctx } = this;
     const data = await ctx.service.utils.post(url, {
-        chatId: 'oc_5e5c984285cc652aa8e07d8e746808c7',
+        chatId: 'oc_0f6f75dac73cba801eb8521eeb464c7c',
         params: {
             text: text
         }

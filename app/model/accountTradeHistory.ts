@@ -11,7 +11,7 @@ export default (app) => {
       // mango 数据
       loadTimestamp: { type: String },
       address: { type: String },
-      seqNum: { type: String, unique: true },
+      seqNum: { type: String},
       makerFee: { type: String },
       takerFee: { type: String },
       takerSide: { type: String },

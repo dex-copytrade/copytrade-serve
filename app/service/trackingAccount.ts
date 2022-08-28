@@ -38,7 +38,12 @@ export default class TrackingAccount extends Service {
     const url =
       "https://mango-transaction-log.herokuapp.com/v3/stats/activity-feed";
     const data = await ctx.service.utils.get(url, { "mango-account": account });
-    return data;
+    if(data && Array.isArray(data)){
+      return data
+    }else {
+      ctx.service.lark.sendChatMessage(`账号： ${account} getActivityFeed 异常`)
+      return []
+    }
   }
   public async updateOwner() {
     const { ctx } = this;
