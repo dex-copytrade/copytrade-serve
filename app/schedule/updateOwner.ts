@@ -12,6 +12,10 @@ export default class updateOwner extends Subscription {
   // subscribe 是真正定时任务执行时被运行的函数
   async subscribe() {
     const { ctx } = this;
-    await ctx.service.trackingAccount.updateOwner()
+    if(ctx.app.env !== 'local'){
+      ctx.logger.info('updateOwner');
+      await ctx.service.trackingAccount.updateOwner()
+    }
+   
   }
 }

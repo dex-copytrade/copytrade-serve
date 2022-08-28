@@ -12,7 +12,10 @@ export default class UpdateAccountTradeHistory extends Subscription {
   // subscribe 是真正定时任务执行时被运行的函数
   async subscribe() {
     const { ctx } = this;
-    ctx.logger.info('开始执行updateAccountTradeHistory');
-    await ctx.service.accountTradeHistory.updateAccountTradeHistory()
+    if(ctx.app.env !== 'local'){
+      ctx.logger.info('开始执行updateAccountTradeHistory');
+      await ctx.service.accountTradeHistory.updateAccountTradeHistory()
+    }
+   
   }
 }
