@@ -8,9 +8,24 @@ export default class TrackingAccount extends Service {
     } catch (error) {}
   }
 
-  public async getAccount(owner = null){
+  public async getOwnerAccount(owner = null){
     const { ctx } = this;
     return await ctx.model.TrackingAccount.find({owner})
+  }
+
+  public async getAccount(filter = {}){
+    const { ctx } = this;
+    return await ctx.model.TrackingAccount.find(filter)
+  }
+
+  public async getOneAccount(filter = {}){
+    const { ctx } = this;
+    return await ctx.model.TrackingAccount.findOne(filter)
+  }
+
+  public async updateAccount(filter = {}, data){
+    const { ctx } = this;
+    return await ctx.model.TrackingAccount.updateMany(filter, data)
   }
 
   public async bulkWriteOwner(writes){
@@ -27,7 +42,7 @@ export default class TrackingAccount extends Service {
   }
   public async updateOwner() {
     const { ctx } = this;
-    const list = await ctx.service.trackingAccount.getAccount();
+    const list = await ctx.service.trackingAccount.getOwnerAccount();
     const updateList: Array<any> = [];
     for await (const account of list) {
       const feed = await this.getActivityFeed(account.account);

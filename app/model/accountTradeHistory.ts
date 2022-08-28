@@ -1,11 +1,28 @@
+import md5 from 'md5'
 // 跟踪记录
 export default (app) => {
   const mongoose = app.mongoose;
   const Schema = new mongoose.Schema(
     {
       account: { type: String, required: true }, // 保证金账号
-      grasp: { type: Number, required: true, default: 1 }, // 是否处理 1 未处理 2已处理
+      owner: { type: String }, // 钱包地址
+      md5: { type: String, unique: true },
       status: { type: Number, default: 1 }, // 0已删除，1是正常
+      // mango 数据
+      loadTimestamp: { type: String },
+      address: { type: String },
+      seqNum: { type: String, unique: true },
+      makerFee: { type: String },
+      takerFee: { type: String },
+      takerSide: { type: String },
+      maker: { type: String },
+      makerOrderId: { type: String, },
+      taker: { type: String },
+      takerOrderId: { type: String},
+      price: { type: String },
+      quantity: { type: String },
+      makerClientOrderId: { type: String },
+      takerClientOrderId: { type: String },
       createTime: {
         type: Date,
         default: Date.now,
@@ -20,6 +37,12 @@ export default (app) => {
       timestamps: { createdAt: "createTime", updatedAt: "updateTime" },
     }
   );
+  Schema.pre('save', function (next) {
+    // @ts-ignore
+    const _this = this;
+    _this.md5 = md5(_this.seqNum + _this.address)
+    next()
+  })
 
   return mongoose.model("AccountTradeHistory", Schema);
 };

@@ -6,6 +6,7 @@
     "node_modules*"
   ],
   "compilerOptions": {
+    "noImplicitAny": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     // ... rest
