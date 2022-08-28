@@ -29,12 +29,12 @@ export default class AccountTradeHistory extends Service {
     const { ctx } = this;
     return await ctx.model.AccountTradeHistory.updateMany(filter, data);
   }
-  private async getAccountHistoryAll(account: string) {
+  private async getAccountHistoryAll(account: string, page) {
     const { ctx } = this;
     const url = `https://trade-history-api-v3.onrender.com/perp_trades/${account}`;
     const data = await ctx.service.utils.get(
       url,
-      {},
+      {page},
       {
         "user-agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63",
@@ -46,19 +46,19 @@ export default class AccountTradeHistory extends Service {
       return [];
     }
   }
-  public async updateAccountTradeHistory(acc?, page: number = 1) {
+  public async updateAccountTradeHistory(acc?, page: number = 2) {
     const { ctx } = this;
-    const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
-      grasp: 1,
-    });
-    // const account = await ctx.service.trackingAccount.getOneAccount({
-    //   account: "9Z7ts8g29L5XnamRrLsSaNT3A1ZiCS8E2npyKWw3jrw6",
+    // const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
+    //   grasp: 1,
     // });
+    const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
+      account: "AoQJZaoTePWwgvHG4MTtUZ3N9Eqkxny25vpFmJYzSAvM",
+    });
 
     if (account) {
       ctx.logger.info("updateAccountTradeHistory插入", account.account);
       const data: Array<TradeHistory> = await this.getAccountHistoryAll(
-        account.account
+        account.account,page
       );
       if (data.length > 0) {
         try {
