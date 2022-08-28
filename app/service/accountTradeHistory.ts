@@ -31,18 +31,23 @@ export default class AccountTradeHistory extends Service {
   }
   private async getAccountHistoryAll(account: string, page) {
     const { ctx } = this;
-    const url = `https://trade-history-api-v3.onrender.com/perp_trades/${account}`;
-    const data = await ctx.service.utils.get(
-      url,
-      { page },
-      {
-        "user-agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63"
+    try {
+      const url = `https://trade-history-api-v3.onrender.com/perp_trades/${account}`;
+      const data = await ctx.service.utils.get(
+        url,
+        { page },
+        {
+          "user-agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63",
+        }
+      );
+      if (data.success === true) {
+        return data.data;
+      } else {
+        return [];
       }
-    );
-    if (data.success === true) {
-      return data.data;
-    } else {
+    } catch (error) {
+      ctx.logger.error("getAccountHistoryAll===>>请求错误", error);
       return [];
     }
   }
@@ -58,10 +63,14 @@ export default class AccountTradeHistory extends Service {
     // });
 
     if (account) {
-      ctx.logger.info("updateAccountTradeHistory插入", account.account);
       const data: Array<TradeHistory> = await this.getAccountHistoryAll(
         account.account,
         page
+      );
+      ctx.logger.info(
+        "updateAccountTradeHistory===>>插入",
+        account.account,
+        data.length
       );
       if (data.length > 0) {
         // 更新
