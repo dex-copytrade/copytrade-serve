@@ -66,13 +66,13 @@ export default class AccountTradeHistory extends Service {
               owner: account.owner,
             };
           });
-          await this.create(_data);
           ctx.service.lark.sendChatMessage(`账号： ${account.account} 成功更新：${data.length} 条数据`)
           ctx.logger.info(
             "updateAccountTradeHistory成功",
             data.length,
             account.account
           );
+          await this.create(_data);
         } catch (error) {
           ctx.logger.error("updateAccountTradeHistory", error);
         }
