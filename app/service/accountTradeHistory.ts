@@ -37,21 +37,7 @@ export default class AccountTradeHistory extends Service {
       { page },
       {
         "user-agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63",
-        "Cache-Control": "no-cache",
-        Host: "mango-transaction-log.herokuapp.com",
-        Connection: "keep-alive",
-        Pragma: "no-cache",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.70",
-        "sec-ch-ua": `"Chromium";v="104", " Not A;Brand";v="99", "Microsoft Edge";v="104"`,
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": "macOS",
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63"
       }
     );
     if (data.success === true) {
