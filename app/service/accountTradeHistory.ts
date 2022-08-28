@@ -48,12 +48,12 @@ export default class AccountTradeHistory extends Service {
   }
   public async updateAccountTradeHistory(acc?, page: number = 1) {
     const { ctx } = this;
-    // const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
-    //   grasp: 1,
-    // });
     const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
-      account: "AoQJZaoTePWwgvHG4MTtUZ3N9Eqkxny25vpFmJYzSAvM",
+      grasp: 1,
     });
+    // const account = acc ? acc : await ctx.service.trackingAccount.getOneAccount({
+    //   account: "AoQJZaoTePWwgvHG4MTtUZ3N9Eqkxny25vpFmJYzSAvM",
+    // });
 
     if (account) {
       ctx.logger.info("updateAccountTradeHistory插入", account.account);
