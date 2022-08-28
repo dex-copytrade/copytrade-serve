@@ -3,6 +3,13 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
+  config.view =  {
+    mapping: {
+      '.nj': 'nunjucks',
+      '.ejs': 'ejs',
+    },
+  },
+
   config.mongoose = {
     client: {
       url: 'mongodb://CopytradeTestUser:qazwsxrfv#$hjdsweyuuwei@43.134.151.23:27017/CopytradeTest',

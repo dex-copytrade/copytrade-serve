@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+<body>
+    
+    <div>
+        <p>累计跟踪账户：<%= data.count %></p>
+        <p>数据未爬取账户：<%= data.count1 %></p>
+        <p>累计历史数据：<%= data.count2 %></p>
+    </div>
+    <div>
+        重新跑账户:
+        <input type="text" id="account">
+        <button onclick="onClick()">确定</button>
+    </div>
+    <script>
+
+        function onClick() {
+            const v = document.getElementById('account')
+            axios.get('./')
+            console.log(v.value)
+        }
+
+    </script>
+</body>
+</html>
