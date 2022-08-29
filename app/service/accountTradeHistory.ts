@@ -21,9 +21,15 @@ const sleep = (time) =>
   new Promise((resolve) => setTimeout(resolve, time * 1000));
 
 export default class AccountTradeHistory extends Service {
-  public async create(data) {
+  public async create(data, account?) {
     const { ctx } = this;
-    return await ctx.model.AccountTradeHistory.create(data);
+    try {
+      return await ctx.model.AccountTradeHistory.create(data);
+    } catch (error) {
+      ctx.service.lark.sendChatMessage(
+        `账号： ${account} 异常：${String(error)}`
+      );
+    }
   }
   public async update(filter = {}, data) {
     const { ctx } = this;
@@ -94,7 +100,7 @@ export default class AccountTradeHistory extends Service {
             data.length,
             account.account
           );
-          this.create(_data);
+          this.create(_data, account.account);
           if (data.length === 5000) {
             await sleep(60);
             await this.updateAccountTradeHistory(
