@@ -12,7 +12,7 @@ export default (app) => {
       blockDatetime: { type: String },
       signature: { type: String },
       symbol: { type: String},
-      settlement: { type: String },
+      settlement: { type: Number },
       counterparty: { type: String },
       createTime: {
         type: Date,
