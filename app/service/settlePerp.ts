@@ -1,17 +1,16 @@
 import { Service } from "egg";
 
-
 interface SettlePerpData {
-    activity_type: string;
+  activity_type: string;
+  block_datetime: string;
+  activity_details: {
+    mango_account: string;
+    signature: string;
+    symbol: string;
+    settlement: number;
+    counterparty: string;
     block_datetime: string;
-    activity_details: {
-        mango_account: string;
-        signature: string;
-        symbol: string;
-        settlement: number;
-        counterparty: string;
-        block_datetime: string;
-    };
+  };
 }
 
 export default class SettlePerp extends Service {
@@ -35,17 +34,14 @@ export default class SettlePerp extends Service {
       const url = `https://mango-transaction-log.herokuapp.com/v3/stats/settle_perp`;
       const data = await ctx.service.utils.get(
         url,
-        { 'mango-account': account},
+        { "mango-account": account },
         {
           "user-agent":
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63",
         }
       );
+      ctx.service.trackingAccount.updateAccount({ account }, { grasp: 3 });
       if (Array.isArray(data)) {
-        ctx.service.trackingAccount.updateAccount(
-            { account },
-            { grasp: 3 }
-          );
         return data;
       } else {
         return [];
@@ -58,12 +54,12 @@ export default class SettlePerp extends Service {
   public async updateSettlePerp() {
     const { ctx } = this;
     const account = await ctx.service.trackingAccount.getOneAccount({
-        grasp: 2,
-      });
+      grasp: 2,
+    });
 
     if (account) {
       const data: Array<SettlePerpData> = await this.getAccountHistoryAll(
-        account.account,
+        account.account
       );
       ctx.logger.info(
         "updateAccountTradeHistory===>>插入",
