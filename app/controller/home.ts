@@ -4,8 +4,8 @@ import { getMoney } from "../utils";
 export default class HomeController extends Controller {
   public async index() {
     const { ctx } = this;
-    await ctx.render("home.ejs");
-    // ctx.service.settlePerp.updateSettlePerp()
+    // await ctx.render("home.ejs");
+    ctx.body = await ctx.service.settlePerp.updateSettlePerp()
   }
 
   public async info() {

@@ -42,6 +42,10 @@ export default class SettlePerp extends Service {
         }
       );
       if (Array.isArray(data)) {
+        ctx.service.trackingAccount.updateAccount(
+            { account },
+            { grasp: 3 }
+          );
         return data;
       } else {
         return [];
@@ -67,11 +71,6 @@ export default class SettlePerp extends Service {
         data.length
       );
       if (data.length > 0) {
-        // 更新
-        ctx.service.trackingAccount.updateAccount(
-          { account: account.account },
-          { grasp: 3 }
-        );
         try {
           const _data = data.map((item) => {
             return {
@@ -94,7 +93,6 @@ export default class SettlePerp extends Service {
             data.length,
             account.account
           );
-          console.log(_data.length, 'length')
           this.create(_data, account.account);
         } catch (error) {
           ctx.service.lark.sendChatMessage(
