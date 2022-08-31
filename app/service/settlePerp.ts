@@ -1,4 +1,5 @@
 import { Service } from "egg";
+import dayjs from "dayjs";
 
 interface SettlePerpData {
   activity_type: string;
@@ -14,6 +15,77 @@ interface SettlePerpData {
 }
 
 export default class SettlePerp extends Service {
+  public async getAllPnl() {
+    const { ctx } = this;
+    const data = await ctx.model.SettlePerp.find({ blockTimestamp: null });
+    const updateList: any = [];
+    for await (const i of data) {
+      updateList.push({
+        updateMany: {
+          filter: { _id: i._id },
+          update: { blockTimestamp: dayjs(i.blockDatetime).valueOf() },
+        },
+      });
+    }
+
+    // }
+    // }
+    await ctx.model.SettlePerp.bulkWrite(updateList)
+    // return await ctx.service.trackingAccount.bulkWriteOwner(updateList)
+    // ctx.model.SettlePerp.u
+    // const ids = data.map(i => i._id)
+    // await ctx.model.SettlePerp.updateMany({_id: ids}, { blockDatetime: })
+    // { $gte: dayjs(date).startOf('date').toDate(), $lte: dayjs(date).endOf('date').toDate() };
+    // {
+    //   $project: {
+    //     USDT: 1, time: { $dateToString: { format: '%Y-%m-%d', timezone: '+08:00', date: '$createTime' } },
+    //   },
+    // },
+    // { $group: { _id: '$time', count: { $sum: 1 }, qty: { $sum: '$USDT' } } },
+    // { $sort: { _id: -1 } },
+    // { $project: { count: 1, qty: 1, date: { $toUpper: '$_id' }, _id: 0 } },
+    // const data = await ctx.model.SettlePerp.aggregate([
+    //   {
+    //     $addFields: {
+    //       blockTimestamp: {
+    //         $toLong: {
+    //           $dateFromString: {
+    //             dateString: "$blockDatetime",
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   // {
+    //   //   $project: {
+    //   //       "status":1,
+    //   //       "blockDatetime": 1,
+    //   //       "blockTimestamp": {
+    //   //         "$toLong": {
+    //   //           "$dateFromString": {
+    //   //             "dateString": "$blockDatetime"
+    //   //           }
+    //   //         }
+    //   //       }
+    //   //   }
+    //   // },
+    //   {
+    //     $match: {
+    //       status: 1,
+    //       // gte 小于 lte 大于
+    //       blockTimestamp: { $lte: dayjs("2022-08-29").valueOf() },
+    //     },
+    //   },
+    //   { $limit: 50 },
+    //   // { $group: { _id: "$account", sum: { $sum: "$settlement" } } },
+    // ]);
+    // const data = await ctx.model.SettlePerp.findOne({
+    //   createTime: { $gte: dayjs('2022-08-28').startOf('date').toDate() }
+    // })
+    // console.log(dayjs("2022-08-29").valueOf());
+    // return data || "无";
+    return data.length;
+  }
   public async create(data, account?) {
     const { ctx } = this;
     try {
@@ -73,6 +145,7 @@ export default class SettlePerp extends Service {
               ...item,
               activityType: item.activity_type, // 钱包地址
               blockDatetime: item.block_datetime,
+              blockTimestamp: dayjs(item.block_datetime).valueOf(),
               signature: item.activity_details.signature,
               symbol: item.activity_details.symbol,
               settlement: item.activity_details.settlement,

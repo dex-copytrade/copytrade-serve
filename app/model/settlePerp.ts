@@ -10,6 +10,7 @@ export default (app) => {
       status: { type: Number, default: 1 }, // 0已删除，1是正常
       activityType: { type: String }, // 钱包地址
       blockDatetime: { type: String },
+      blockTimestamp: { type: Date },
       signature: { type: String },
       symbol: { type: String},
       settlement: { type: Number },
