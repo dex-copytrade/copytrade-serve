@@ -48,6 +48,8 @@ export default class AccountTradeHistory extends Service {
         }
       );
       if (data.success === true) {
+        // 更新
+        ctx.service.trackingAccount.updateAccount({ account }, { grasp: 2 });
         return data.data;
       } else {
         return [];
@@ -79,11 +81,6 @@ export default class AccountTradeHistory extends Service {
         data.length
       );
       if (data.length > 0) {
-        // 更新
-        ctx.service.trackingAccount.updateAccount(
-          { account: account.account },
-          { grasp: 2 }
-        );
         try {
           const _data = data.map((item) => {
             return {

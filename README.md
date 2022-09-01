@@ -34,3 +34,18 @@ $ npm start
 
 
 // "extends": "eslint-config-egg/typescript",
+
+   const data = await ctx.model.SettlePerp.find({ blockTimestamp: null });
+    const updateList: any = [];
+    for await (const i of data) {
+      updateList.push({
+        updateMany: {
+          filter: { _id: i._id },
+          update: { blockTimestamp: dayjs(i.blockDatetime).valueOf() },
+        },
+      });
+    }
+
+    // }
+    // }
+    await ctx.model.SettlePerp.bulkWrite(updateList)
