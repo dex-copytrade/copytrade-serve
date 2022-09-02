@@ -1,28 +1,28 @@
-import { Service } from "egg";
+import { Service } from 'egg';
 export type HttpMethod =
-  | "GET"
-  | "POST"
-  | "DELETE"
-  | "PUT"
-  | "HEAD"
-  | "OPTIONS"
-  | "PATCH"
-  | "TRACE"
-  | "CONNECT";
+  | 'GET'
+  | 'POST'
+  | 'DELETE'
+  | 'PUT'
+  | 'HEAD'
+  | 'OPTIONS'
+  | 'PATCH'
+  | 'TRACE'
+  | 'CONNECT';
 
 export default class Utils extends Service {
   public async get(url, params?, headers = {}) {
-    return await this.request(url, params, "GET", headers);
+    return await this.request(url, params, 'GET', headers);
   }
 
   public async post(url, params = {}, headers = {}) {
-    return await this.request(url, params, "POST", headers);
+    return await this.request(url, params, 'POST', headers);
   }
 
   private async request(
     path,
     params = {},
-    method: HttpMethod = "POST",
+    method: HttpMethod = 'POST',
     headers = {}
   ) {
     const { ctx } = this;
@@ -30,17 +30,17 @@ export default class Utils extends Service {
       const data = await ctx.curl(path, {
         method,
         headers: {
-          "content-type": "application/json; charset=UTF-8",
+          'content-type': 'application/json; charset=UTF-8',
           ...headers,
         },
-        contentType: "json",
+        contentType: 'json',
         timeout: 300000,
-        dataType: "json",
-        data: params
+        dataType: 'json',
+        data: params,
       });
-      if(data.status === 200){
-        return data.data
-      }else {
+      if (data.status === 200) {
+        return data.data;
+      } else {
         ctx.throw(data.status);
       }
       return data;
