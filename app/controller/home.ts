@@ -4,8 +4,9 @@ import { getMoney } from "../utils";
 export default class HomeController extends Controller {
   public async index() {
     const { ctx } = this;
-    // await ctx.render("home.ejs");
-    ctx.body = await ctx.service.settlePerp.getAllPnl()
+    await ctx.render("home.ejs");
+    // ctx.body = await ctx.service.subList.getCopyCount('sdaasdsadoiiSDLDLLwewsdsd')
+    // ctx.body = await ctx.model.TrackingAccount.updateMany({ status: 1 }, { grasp: 1 });
   }
 
   public async info() {
