@@ -1,14 +1,14 @@
-import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { Context, EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  config.view =  {
+  config.view = {
     mapping: {
       '.nj': 'nunjucks',
       '.ejs': 'ejs',
     },
-  },
+  };
 
   config.mongoose = {
     client: {
@@ -19,14 +19,30 @@ export default (appInfo: EggAppInfo) => {
         bufferMaxEntries: 0,
       },
     },
-  }
+  };
 
   // override config from framework / plugin
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1661496474724_8957';
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = ['responseTime', 'errorHandler'];
+
+  // 关闭csrf预防
+  config.security = {
+    methodnoallow: {
+      enable: false,
+    },
+    csrf: {
+      enable: false,
+    },
+  };
+
+  config.cors = {
+    origin: (ctx: Context) => ctx.get('origin'),
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    credentials: true,
+  };
 
   // add your special config in here
   const bizConfig = {

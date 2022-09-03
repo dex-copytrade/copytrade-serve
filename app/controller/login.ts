@@ -4,6 +4,7 @@ import { generateNonce, ErrorTypes, SiweMessage } from 'siwe';
 export default class login extends Controller {
   async ethereumNonce() {
     const { ctx } = this;
+    console.log(ctx);
     ctx.session.nonce = generateNonce();
     ctx.body = ctx.helper.success({
       msg: 'nonce',

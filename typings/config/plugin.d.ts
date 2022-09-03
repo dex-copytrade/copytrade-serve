@@ -16,6 +16,7 @@ import 'egg-jsonp';
 import 'egg-view';
 import 'egg-mongoose';
 import 'egg-console';
+import 'egg-cors';
 import 'egg-view-nunjucks';
 import 'egg-view-ejs';
 import { EggPluginItem } from 'egg';
@@ -35,6 +36,7 @@ declare module 'egg' {
     view?: EggPluginItem;
     mongoose?: EggPluginItem;
     console?: EggPluginItem;
+    cors?: EggPluginItem;
     nunjucks?: EggPluginItem;
     ejs?: EggPluginItem;
   }
