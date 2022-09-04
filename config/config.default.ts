@@ -28,6 +28,18 @@ export default (appInfo: EggAppInfo) => {
   // add your egg config in here
   config.middleware = ['responseTime', 'errorHandler'];
 
+  // 配置不生效
+  // config.responseTime = {
+  //   enable: true,
+  //   headerKey: 'x-fxxk-t',
+  // };
+
+  // 单独配置也不生效
+  // config.jwt = {
+  //   enable: true, // default is false
+  //   match: '/api/solana', // optional
+  // };
+
   // 关闭csrf预防
   config.security = {
     methodnoallow: {

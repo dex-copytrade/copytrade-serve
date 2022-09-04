@@ -1,3 +1,4 @@
+import { SIWS } from '@web3auth/sign-in-with-solana';
 import { Controller } from 'egg';
 import { generateNonce, ErrorTypes, SiweMessage } from 'siwe';
 
@@ -75,9 +76,28 @@ export default class login extends Controller {
 
   async solanaVerify() {
     const { ctx } = this;
-    ctx.body = ctx.helper.success({
-      msg: 'solanaVerify',
-    });
+    const { header, payload, signature } = ctx.request.body;
+    try {
+      const msg = new SIWS({ header, payload });
+      const resp = await msg.verify({ payload, signature });
+      if (resp.success === true) {
+        ctx.body = ctx.helper.success({
+          msg: 'solanaVerify',
+          data: resp,
+        });
+      } else {
+        ctx.body = ctx.helper.success({
+          msg: 'solanaVerify',
+          code: 100,
+        });
+      }
+    } catch (e) {
+      ctx.logger.error(e);
+      ctx.body = ctx.helper.error({
+        msg: 'solanaVerify fail',
+        data: e,
+      });
+    }
   }
 
   async getSolanaPersonInfomation() {
