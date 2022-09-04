@@ -21,7 +21,7 @@ export default class SubList extends Service {
     const { ctx } = this;
     const owner =
       ctx.state.owner || "5L8BP2gLQ2nUGRrs52t6NC1UzUaMUDuoPAjp1hvTGB1312";
-    return await ctx.model.SubList.find({ owner });
+    return await ctx.model.SubList.findOne({ owner });
   }
 
   public async cancelSub(account) {
