@@ -11,6 +11,7 @@ import ExportInfo from '../../../app/service/info';
 import ExportLark from '../../../app/service/lark';
 import ExportOrderBook from '../../../app/service/orderBook';
 import ExportSettlePerp from '../../../app/service/settlePerp';
+import ExportSubList from '../../../app/service/subList';
 import ExportTrackingAccount from '../../../app/service/trackingAccount';
 import ExportUtils from '../../../app/service/utils';
 
@@ -21,6 +22,7 @@ declare module 'egg' {
     lark: AutoInstanceType<typeof ExportLark>;
     orderBook: AutoInstanceType<typeof ExportOrderBook>;
     settlePerp: AutoInstanceType<typeof ExportSettlePerp>;
+    subList: AutoInstanceType<typeof ExportSubList>;
     trackingAccount: AutoInstanceType<typeof ExportTrackingAccount>;
     utils: AutoInstanceType<typeof ExportUtils>;
   }
