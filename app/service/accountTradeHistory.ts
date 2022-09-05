@@ -1,4 +1,4 @@
-import { Service } from "egg";
+import { Service } from 'egg';
 
 interface TradeHistory {
   loadTimestamp: string;
@@ -43,8 +43,8 @@ export default class AccountTradeHistory extends Service {
         url,
         { page },
         {
-          "user-agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63",
+          'user-agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.63',
         }
       );
       if (data.success === true) {
@@ -55,7 +55,7 @@ export default class AccountTradeHistory extends Service {
         return [];
       }
     } catch (error) {
-      ctx.logger.error("getAccountHistoryAll===>>请求错误", error);
+      ctx.logger.error('getAccountHistoryAll===>>请求错误', error);
       return [];
     }
   }
@@ -76,7 +76,7 @@ export default class AccountTradeHistory extends Service {
         page
       );
       ctx.logger.info(
-        "updateAccountTradeHistory===>>插入",
+        'updateAccountTradeHistory===>>插入',
         account.account,
         data.length
       );
@@ -93,7 +93,7 @@ export default class AccountTradeHistory extends Service {
             `账号： ${account.account} 成功更新：${data.length} 条数据 Page: ${page}`
           );
           ctx.logger.info(
-            "updateAccountTradeHistory成功",
+            'updateAccountTradeHistory成功',
             data.length,
             account.account
           );
@@ -112,10 +112,10 @@ export default class AccountTradeHistory extends Service {
           ctx.service.lark.sendChatMessage(
             `账号： ${account.account} 异常：${String(error)}`
           );
-          ctx.logger.error("updateAccountTradeHistory", error);
+          ctx.logger.error('updateAccountTradeHistory', error);
         }
       } else {
-        ctx.logger.info("无数据", account.account);
+        ctx.logger.info('无数据', account.account);
       }
     }
   }

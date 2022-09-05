@@ -1,5 +1,20 @@
 {
+  "extends": "eslint-config-egg/typescript",
   "parserOptions": {
     "project": "./tsconfig.json"
+  },
+  "rules": {
+    "space-before-function-paren": [
+      "off"
+    ],
+    "array-bracket-spacing": [
+      "off"
+    ],
+    "comma-dangle": [
+      "off"
+    ],
+    "quotes": "off",
+    "@typescript-eslint/indent": "off",
+    "arrow-parens": "off"
   }
 }

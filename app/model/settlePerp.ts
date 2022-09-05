@@ -1,4 +1,4 @@
-import md5 from 'md5'
+import md5 from 'md5';
 // 跟踪记录
 export default (app) => {
   const mongoose = app.mongoose;
@@ -12,7 +12,7 @@ export default (app) => {
       blockDatetime: { type: String },
       blockTimestamp: { type: Date },
       signature: { type: String },
-      symbol: { type: String},
+      symbol: { type: String },
       settlement: { type: Number },
       counterparty: { type: String },
       createTime: {
@@ -26,15 +26,15 @@ export default (app) => {
     },
     {
       versionKey: false,
-      timestamps: { createdAt: "createTime", updatedAt: "updateTime" },
+      timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' },
     }
   );
   Schema.pre('save', function (next) {
     // @ts-ignore
     const _this = this;
-    _this.md5 = md5(_this.activityType + _this.blockDatetime + _this.symbol)
-    next()
-  })
+    _this.md5 = md5(_this.activityType + _this.blockDatetime + _this.symbol);
+    next();
+  });
 
-  return mongoose.model("SettlePerp", Schema);
+  return mongoose.model('SettlePerp', Schema);
 };

@@ -10,6 +10,7 @@ import ExportAccountTradeHistory from '../../../app/service/accountTradeHistory'
 import ExportInfo from '../../../app/service/info';
 import ExportLark from '../../../app/service/lark';
 import ExportOrderBook from '../../../app/service/orderBook';
+import ExportPosition from '../../../app/service/position';
 import ExportSettlePerp from '../../../app/service/settlePerp';
 import ExportSubList from '../../../app/service/subList';
 import ExportTrackingAccount from '../../../app/service/trackingAccount';
@@ -21,6 +22,7 @@ declare module 'egg' {
     info: AutoInstanceType<typeof ExportInfo>;
     lark: AutoInstanceType<typeof ExportLark>;
     orderBook: AutoInstanceType<typeof ExportOrderBook>;
+    position: AutoInstanceType<typeof ExportPosition>;
     settlePerp: AutoInstanceType<typeof ExportSettlePerp>;
     subList: AutoInstanceType<typeof ExportSubList>;
     trackingAccount: AutoInstanceType<typeof ExportTrackingAccount>;

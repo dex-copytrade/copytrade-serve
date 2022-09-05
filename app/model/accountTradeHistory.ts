@@ -1,4 +1,4 @@
-import md5 from 'md5'
+import md5 from 'md5';
 // 跟踪记录
 export default (app) => {
   const mongoose = app.mongoose;
@@ -11,14 +11,14 @@ export default (app) => {
       // mango 数据
       loadTimestamp: { type: String },
       address: { type: String },
-      seqNum: { type: String},
+      seqNum: { type: String },
       makerFee: { type: String },
       takerFee: { type: String },
       takerSide: { type: String },
       maker: { type: String },
-      makerOrderId: { type: String, },
+      makerOrderId: { type: String },
       taker: { type: String },
-      takerOrderId: { type: String},
+      takerOrderId: { type: String },
       price: { type: String },
       quantity: { type: String },
       makerClientOrderId: { type: String },
@@ -34,15 +34,15 @@ export default (app) => {
     },
     {
       versionKey: false,
-      timestamps: { createdAt: "createTime", updatedAt: "updateTime" },
+      timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' },
     }
   );
   Schema.pre('save', function (next) {
     // @ts-ignore
     const _this = this;
-    _this.md5 = md5(_this.seqNum + _this.account + _this.address)
-    next()
-  })
+    _this.md5 = md5(_this.seqNum + _this.account + _this.address);
+    next();
+  });
 
-  return mongoose.model("AccountTradeHistory", Schema);
+  return mongoose.model('AccountTradeHistory', Schema);
 };
