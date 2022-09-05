@@ -6,6 +6,10 @@ export default (app: Application) => {
   router.get('/', controller.home.index);
   router.get('/api/info', controller.home.info);
 
+  // 获取历史记录
+  router.get('/api/position/list', controller.position.list);
+  router.get('/api/position', controller.position.history);
+
   // web3 login ethereum
   router.get('/api/ethereum/nonce', controller.login.ethereumNonce);
   router.post('/api/ethereum/verify', controller.login.ethereumVerify);
