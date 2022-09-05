@@ -43,7 +43,6 @@ export default class Position extends Service {
           )
           .filter((m) => m.basePosition !== 0)
       : [];
-    console.log(perpPositions, 'groupConfig');
 
     return {
       perpPositions,

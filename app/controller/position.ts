@@ -20,9 +20,12 @@ export default class PositionController extends Controller {
   public async history() {
     const { ctx } = this;
     const { owner } = ctx.request.header;
+    const list = await ctx.service.accountTradeHistory.getTradeHistoryByOwner(
+      owner as string
+    );
+
     ctx.body = ctx.helper.success({
-      msg: 'get history list',
-      data: owner,
+      data: list,
     });
   }
 }

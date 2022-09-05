@@ -8,7 +8,7 @@ export default (app: Application) => {
 
   // 获取历史记录
   router.get('/api/position/list', controller.position.list);
-  router.get('/api/position', controller.position.history);
+  router.get('/api/tradeHistory/list', controller.position.history);
 
   // web3 login ethereum
   router.get('/api/ethereum/nonce', controller.login.ethereumNonce);

@@ -59,7 +59,7 @@ export default class AccountTradeHistory extends Service {
       return [];
     }
   }
-  public async updateAccountTradeHistory(acc?, page: number = 1) {
+  public async updateAccountTradeHistory(acc?, page = 1) {
     const { ctx } = this;
     const account = acc
       ? acc
@@ -117,6 +117,19 @@ export default class AccountTradeHistory extends Service {
       } else {
         ctx.logger.info('无数据', account.account);
       }
+    }
+  }
+
+  public async getTradeHistoryByOwner(owner: string) {
+    const { ctx } = this;
+    try {
+      const list = await ctx.model.AccountTradeHistory.find({
+        owner,
+      }).limit(100);
+      console.log(`查询到 ${list.length} 条记录`);
+      return list;
+    } catch (error) {
+      ctx.logger.error(error);
     }
   }
 }
