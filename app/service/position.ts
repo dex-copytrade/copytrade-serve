@@ -30,21 +30,22 @@ export default class Position extends Service {
     const allMarkets = await fetchMangoData({ groupConfig, connection });
 
     const perpPositions = mangoAccount
-      ? groupConfig.perpMarkets.map((m) =>
-          collectPerpPosition(
-            mangoAccount,
-            mangoGroup,
-            {}, // mangoCache
-            m,
-            allMarkets[m.publicKey.toBase58()] as PerpMarket,
-            [] // tradeHistory
+      ? groupConfig.perpMarkets
+          .map((m) =>
+            collectPerpPosition(
+              mangoAccount,
+              mangoGroup,
+              {}, // mangoCache
+              m,
+              allMarkets[m.publicKey.toBase58()] as PerpMarket,
+              [] // tradeHistory
+            )
           )
-        )
+          .filter((m) => m.basePosition !== 0)
       : [];
     console.log(perpPositions, 'groupConfig');
 
     return {
-      owner,
       perpPositions,
     };
   }
