@@ -1,13 +1,12 @@
-import { IResponse, ResponseCode, ResponseMsg } from '../types';
-export default {
-  parseInt(str: string | number): number {
-    if (typeof str === 'number') return str;
-    if (!str) return 0;
-    return parseInt(str) || 0;
-  },
+import { IResponse, ResponseCode, ResponseMsg } from "../types";
 
+export default {
   success(res: Partial<IResponse>) {
-    const { code = ResponseCode.SUCCESS, msg = ResponseMsg.SUCCESS, data = null } = res;
+    const {
+      code = ResponseCode.SUCCESS,
+      msg = ResponseMsg.SUCCESS,
+      data = null,
+    } = res;
     return {
       code,
       msg,
@@ -16,7 +15,11 @@ export default {
   },
 
   error(res: Partial<IResponse>) {
-    const { code = ResponseCode.ERROR, msg = ResponseMsg.ERROR, data = null } = res;
+    const {
+      code = ResponseCode.ERROR,
+      msg = ResponseMsg.ERROR,
+      data = null,
+    } = res;
     return {
       code,
       msg,

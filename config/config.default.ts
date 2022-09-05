@@ -3,7 +3,7 @@ import { Context, EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  config.security = {
+  (config.security = {
     csrf: {
       // ignoreJSON: true, // 默认为 false，当设置为 true 时，将会放过所有 content-type 为 `application/json` 的请求
       enable: false,
@@ -30,7 +30,7 @@ export default (appInfo: EggAppInfo) => {
 
   // override config from framework / plugin
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1661496474724_8957';
+  config.keys = appInfo.name + "_1661496474724_8957";
 
   // add your egg config in here
   config.middleware = ['responseTime', 'errorHandler', 'error'];

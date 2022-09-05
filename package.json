@@ -19,7 +19,7 @@
     "ci": "npm run lint && npm run cov && npm run tsc",
     "autod": "autod",
     "lint": "eslint . --ext .ts --resolve-plugins-relative-to .",
-    "clean": "ets clean"
+    "clean": "tsc -b --clean"
   },
   "dependencies": {
     "@blockworks-foundation/mango-client": "^3.6.14",

@@ -14,4 +14,12 @@ export default class HomeController extends Controller {
     const data = await ctx.service.info.info();
     await ctx.render('info.ejs', { data: { getMoney, ...data } });
   }
+  public async test() {
+    const { ctx } = this;
+
+    const data =
+      await ctx.service.accountPNLStatistics.updatePNLStatisticsWithAccount();
+    // await ctx.render("info.ejs", { data: { getMoney, ...data } });
+    ctx.body = data;
+  }
 }
