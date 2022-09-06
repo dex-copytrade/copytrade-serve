@@ -2,11 +2,9 @@ import { Context } from 'egg';
 
 module.exports = () => {
   return async (ctx: Context, next) => {
-    console.log('in jwt middleware...');
-
-    if (ctx.request.header.token) {
-      const address = ctx.request.header.token;
-      ctx.state.address = address;
+    if (ctx.request.header.owner) {
+      const { owner } = ctx.request.header;
+      ctx.state.owner = owner;
       await next();
     } else {
       ctx.body = {
