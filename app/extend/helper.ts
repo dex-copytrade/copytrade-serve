@@ -1,3 +1,4 @@
+import { Context } from "egg";
 import { IResponse, ResponseCode, ResponseMsg } from "../types";
 
 export default {

@@ -6,8 +6,7 @@ import { Service } from "egg";
 export default class SubList extends Service {
   public async create({ phoneNumber, email, account }) {
     const { ctx } = this;
-    const owner =
-      ctx.state.owner || "5L8BP2gLQ2nUGRrs52t6NC1UzUaMUDuoPAjp1hvTGB1312";
+    const owner = ctx.state.address;
     const params = {
       phoneNumber,
       email,
@@ -19,15 +18,13 @@ export default class SubList extends Service {
 
   public async info() {
     const { ctx } = this;
-    const owner =
-      ctx.state.owner || "5L8BP2gLQ2nUGRrs52t6NC1UzUaMUDuoPAjp1hvTGB1312";
+    const owner = ctx.state.address;
     return await ctx.model.SubList.findOne({ owner });
   }
 
   public async cancelSub(account) {
     const { ctx } = this;
-    const owner =
-      ctx.state.owner || "5L8BP2gLQ2nUGRrs52t6NC1UzUaMUDuoPAjp1hvTGB131";
+    const owner = ctx.state.address;
     return await ctx.model.SubList.updateOne(
       { owner },
       { $pull: { subAccount: { $in: [account] } } }
@@ -36,8 +33,7 @@ export default class SubList extends Service {
 
   public async addSub(account) {
     const { ctx } = this;
-    const owner =
-      ctx.state.owner || "5L8BP2gLQ2nUGRrs52t6NC1UzUaMUDuoPAjp1hvTGB1312";
+    const owner = ctx.state.address;
     return await ctx.model.SubList.updateOne(
       { owner },
       { $addToSet: { subAccount: [account] } }
@@ -51,16 +47,21 @@ export default class SubList extends Service {
         $match: { owner },
       },
 
-      {$project: {
-        owner: 1,
-        subAccount: 1,
-        subAccountCount: { $size:"$subAccount" }}}
+      {
+        $project: {
+          owner: 1,
+          subAccount: 1,
+          subAccountCount: { $size: "$subAccount" },
+        },
+      },
     ]);
   }
 
   public async getCopyCount(account) {
     const { ctx } = this;
-    return await ctx.model.SubList.find({subAccount: {$in: [account]}}).count()
+    return await ctx.model.SubList.find({
+      subAccount: { $in: [account] },
+    }).count();
   }
   public async list() {
     const { ctx } = this;
