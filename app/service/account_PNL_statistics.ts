@@ -13,6 +13,9 @@ export default class AccountPNLStatistics extends Service {
       const endTime = new Date(
         dayjs(currentDate).add(1, "day").format("YYYY-MM-DD")
       ).toISOString();
+      ctx.logger.info(
+        `updatePNLStatisticsWithAccount:firstTime:${firstTime}, endTime:${endTime}`
+      );
       const data = await ctx.model.SettlePerp.aggregate([
         {
           $match: {
@@ -65,7 +68,7 @@ export default class AccountPNLStatistics extends Service {
       await ctx.model.AccountPNLStatistics.bulkWrite(updateList);
 
       ctx.logger.info(
-        `updatePNLStatisticsWithAccount:info:账户数量:${data.length}`
+        `updatePNLStatisticsWithAccount:info:聚合账户数量:${data.length}`
       );
 
       return data;
