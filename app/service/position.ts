@@ -5,13 +5,14 @@ import {
   MangoClient,
   IDS as configFile,
   PerpMarket,
+  MangoCache,
 } from '@blockworks-foundation/mango-client';
 import { Commitment, Connection, PublicKey } from '@solana/web3.js';
 import { collectPerpPosition, fetchMangoData } from '../utils/position';
 
 export default class Position extends Service {
-  public async getPosition(owner: string) {
-    const mangoAccountPk = new PublicKey(owner);
+  public async getPosition(owner: string, account: string) {
+    const mangoAccountPk = new PublicKey(account);
     // setup client
     const config = new Config(configFile);
     const groupConfig = config.getGroupWithName('mainnet.1') as GroupConfig;
@@ -29,16 +30,21 @@ export default class Position extends Service {
     );
     const allMarkets = await fetchMangoData({ groupConfig, connection });
 
+    const mangoCache = await mangoGroup.loadCache(connection);
+
+    const tradeHistory =
+      await this.ctx.service.accountTradeHistory.getTradeHistoryByOwner(owner);
+
     const perpPositions = mangoAccount
       ? groupConfig.perpMarkets
           .map((m) =>
             collectPerpPosition(
               mangoAccount,
               mangoGroup,
-              {}, // mangoCache
+              mangoCache as MangoCache,
               m,
               allMarkets[m.publicKey.toBase58()] as PerpMarket,
-              [] // tradeHistory
+              tradeHistory
             )
           )
           .filter((m) => m.basePosition !== 0)

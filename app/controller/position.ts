@@ -3,11 +3,18 @@ import { Controller } from 'egg';
 export default class PositionController extends Controller {
   public async list() {
     const { ctx } = this;
-    console.log('position list.', ctx.state);
 
     const { owner } = ctx.state;
     if (owner) {
-      const res = await ctx.service.position.getPosition(owner as string);
+      const { account } =
+        await ctx.service.accountTradeHistory.getAccountWithOwner(
+          owner as string
+        );
+
+      const res = await ctx.service.position.getPosition(
+        owner as string,
+        account
+      );
       ctx.body = ctx.helper.success({
         msg: 'position list',
         data: res,

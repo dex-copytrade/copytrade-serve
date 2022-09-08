@@ -9,10 +9,12 @@ import {
   MangoGroup,
   PerpMarketConfig,
   ZERO_BN,
-  // nativeI80F48ToUi,
+  MangoCache,
+  nativeI80F48ToUi,
 } from '@blockworks-foundation/mango-client';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { Market } from '@project-serum/serum';
+import fetch from 'node-fetch';
 
 interface FetchMangoData {
   client?: MangoClient;
@@ -71,6 +73,7 @@ export async function fetchMangoData({
         decoded
       );
     }
+    return null;
   });
 
   const allMarkets = zipDict(
@@ -84,7 +87,7 @@ export async function fetchMangoData({
 export const collectPerpPosition = (
   mangoAccount: MangoAccount,
   mangoGroup: MangoGroup,
-  mangoCache: any, // MangoCache,
+  mangoCache: MangoCache,
   marketConfig: PerpMarketConfig,
   perpMarket: PerpMarket,
   tradeHistory: any
@@ -99,58 +102,89 @@ export const collectPerpPosition = (
     return;
   }
 
-  // const perpMarketInfo = mangoGroup.perpMarkets[marketConfig.marketIndex];
+  const perpMarketInfo = mangoGroup.perpMarkets[marketConfig.marketIndex];
   const perpAccount = mangoAccount.perpAccounts[marketConfig.marketIndex];
 
-  let avgEntryPrice = 0,
-    breakEvenPrice = 0;
-  const perpTradeHistory = tradeHistory.filter(
-    (t) => t.marketName === marketConfig.name
-  );
-  try {
-    avgEntryPrice = perpAccount
-      .getAverageOpenPrice(mangoAccount, perpMarket, perpTradeHistory)
-      .toNumber();
-  } catch (e) {
-    console.error(marketConfig.name, e);
-  }
+  // let avgEntryPrice = 0;
+  // const perpTradeHistory = tradeHistory.filter(
+  //   (t) => t.marketName === marketConfig.name
+  // );
+  // try {
+  //   avgEntryPrice = perpAccount
+  //     .getAverageOpenPrice(mangoAccount, perpMarket, perpTradeHistory)
+  //     .toNumber();
+  // } catch (e) {
+  //   console.error(marketConfig.name, e);
+  // }
 
-  try {
-    breakEvenPrice = perpAccount
-      .getBreakEvenPrice(mangoAccount, perpMarket, perpTradeHistory)
-      .toNumber();
-  } catch (e) {
-    console.error(marketConfig.name, e);
-  }
+  // let breakEvenPrice = 0;
+  // try {
+  //   breakEvenPrice = perpAccount
+  //     .getBreakEvenPrice(mangoAccount, perpMarket, perpTradeHistory)
+  //     .toNumber();
+  // } catch (e) {
+  //   console.error(marketConfig.name, e);
+  // }
 
   const basePosition = perpMarket?.baseLotsToNumber(perpAccount.basePosition);
-  // const indexPrice = mangoGroup
-  //   .getPrice(marketConfig.marketIndex, mangoCache)
-  //   .toNumber();
-  // const notionalSize = Math.abs(basePosition * indexPrice);
+  const indexPrice = mangoGroup
+    .getPrice(marketConfig.marketIndex, mangoCache)
+    .toNumber();
+  const notionalSize = Math.abs(basePosition * indexPrice);
   // const unrealizedPnl = basePosition * (indexPrice - breakEvenPrice);
-  // const unsettledPnl = +nativeI80F48ToUi(
-  //   perpAccount.getPnl(
-  //     perpMarketInfo,
-  //     mangoCache.perpMarketCache[marketConfig.marketIndex],
-  //     mangoCache.priceCache[marketConfig.marketIndex].price
-  //   ),
-  //   marketConfig.quoteDecimals
-  // ).toNumber();
+  const unsettledPnl = +nativeI80F48ToUi(
+    perpAccount.getPnl(
+      perpMarketInfo,
+      mangoCache.perpMarketCache[marketConfig.marketIndex],
+      mangoCache.priceCache[marketConfig.marketIndex].price
+    ),
+    marketConfig.quoteDecimals
+  ).toNumber();
 
   return {
-    // perpMarketInfo,
-    // perpMarket,
-    // marketConfig,
-    // perpAccount,
+    perpMarketInfo,
+    perpMarket,
+    marketConfig,
+    perpAccount,
     base: marketConfig.baseSymbol,
     side: perpAccount.basePosition.gt(ZERO_BN) ? 'long' : 'short',
     basePosition,
-    // indexPrice,
-    avgEntryPrice,
-    breakEvenPrice,
-    // notionalSize,
+    indexPrice,
+    // avgEntryPrice,
+    // breakEvenPrice,
+    notionalSize,
     // unrealizedPnl,
-    // unsettledPnl,
+    unsettledPnl,
   };
 };
+
+export async function fetchTradeHistory(account: string) {
+  if (!account) return;
+  let tradeHistory = [];
+
+  fetch(`https://trade-history-api-v3.onrender.com/perp_trades/${account}`)
+    .then((response) => response.json())
+    .then((jsonPerpHistory: any) => {
+      const perpHistory = jsonPerpHistory?.data || [];
+
+      tradeHistory = perpHistory;
+      // if (perpHistory.length === 5000) {
+      //   fetch(
+      //     `https://trade-history-api-v3.onrender.com/perp_trades/${account}?page=2`
+      //   )
+      //     .then((response) => response.json())
+      //     .then((jsonPerpHistory) => {
+      //       const perpHistory2 = jsonPerpHistory?.data || []
+      //       tradeHistory.perp = perpHistory.concat(perpHistory2)
+      //     })
+      //     .catch((e) => {
+      //       console.error('Error fetching trade history', e)
+      //     })
+      // }
+    })
+    .catch((e) => {
+      console.error('Error fetching trade history', e);
+    });
+
+  return tradeHistory;
+}

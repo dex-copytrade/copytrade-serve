@@ -125,11 +125,42 @@ export default class AccountTradeHistory extends Service {
     try {
       const list = await ctx.model.AccountTradeHistory.find({
         owner,
-      }).limit(100);
+      }).limit(5000);
       console.log(`查询到 ${list.length} 条记录`);
       return list;
     } catch (error) {
-      ctx.logger.error(error);
+      ctx.logger.error('getTradeHistoryByOwner error', error);
+    }
+  }
+
+  public async getTradeHistoryByAccount(account: string) {
+    const { ctx } = this;
+    try {
+      const list = await ctx.model.AccountTradeHistory.find({
+        account,
+      }).limit(5000);
+      console.log(`查询到 ${list.length} 条记录`);
+      return list;
+    } catch (error) {
+      ctx.logger.error('getTradeHistoryByAccount error', error);
+    }
+  }
+
+  public async getAccountWithOwner(owner: string) {
+    const { ctx } = this;
+    try {
+      const record = await ctx.model.AccountTradeHistory.findOne(
+        {
+          owner,
+        },
+        {
+          account: 1,
+          _id: 0,
+        }
+      );
+      return record;
+    } catch (error) {
+      ctx.logger.error('getTradeHistoryByAccount error', error);
     }
   }
 }
