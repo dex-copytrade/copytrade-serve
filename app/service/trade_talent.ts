@@ -7,7 +7,12 @@ export default class TradeTalentService extends Service {
     const { ctx } = this;
 
     try {
-      const { interval = 7, pageSize = 10, current = 1 } = ctx.request.body;
+      const {
+        interval = 7,
+        pageSize = 10,
+        current = 1,
+        sortKey = "winRate",
+      } = ctx.request.body;
       const currentDate = dayjs().format();
       const endTime = new Date(
         dayjs(currentDate).format("YYYY-MM-DD")
@@ -62,7 +67,6 @@ export default class TradeTalentService extends Service {
             lossOrder: 1,
             winRate: { $divide: ["$profitOrderNums", "$totalOrderNums"] },
             totalRevenue: { $add: ["$profitSettlements", "$lossSettlements"] },
-            //drawdownRate: { $divide: ["$lossSettlements", "$profitSettlements"] }
           },
         },
       ];
@@ -73,7 +77,7 @@ export default class TradeTalentService extends Service {
 
       const data = await ctx.model.AccountPNLStatistics.aggregate([
         ...args,
-        // { $sort: { winRate: -1 } },
+        { $sort: { [sortKey]: -1 } },
         { $skip: skip },
         { $limit: pageSize },
       ]);

@@ -11,6 +11,7 @@ import ExportAccountPNLStatistics from '../../../app/service/account_PNL_statist
 import ExportGmail from '../../../app/service/gmail';
 import ExportInfo from '../../../app/service/info';
 import ExportLark from '../../../app/service/lark';
+import ExportMessagePush from '../../../app/service/message_push';
 import ExportOrderBook from '../../../app/service/orderBook';
 import ExportPosition from '../../../app/service/position';
 import ExportSettlePerp from '../../../app/service/settlePerp';
@@ -26,6 +27,7 @@ declare module 'egg' {
     gmail: AutoInstanceType<typeof ExportGmail>;
     info: AutoInstanceType<typeof ExportInfo>;
     lark: AutoInstanceType<typeof ExportLark>;
+    messagePush: AutoInstanceType<typeof ExportMessagePush>;
     orderBook: AutoInstanceType<typeof ExportOrderBook>;
     position: AutoInstanceType<typeof ExportPosition>;
     settlePerp: AutoInstanceType<typeof ExportSettlePerp>;

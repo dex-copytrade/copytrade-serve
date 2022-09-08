@@ -4,6 +4,7 @@ const rankingRule = {
   interval: { type: "int", require: false, allowEmpty: false },
   current: { type: "int", require: false, allowEmpty: false },
   pageSize: { type: "int", require: false, allowEmpty: false },
+  sortKey: { type: "string", require: false, allowEmpty: false },
 };
 export default class CopyTradeMarketController extends Controller {
   public async tradeTalentRanking() {

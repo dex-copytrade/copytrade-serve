@@ -1,5 +1,5 @@
 // app.ts
-import { Application, IBoot } from 'egg';
+import { Application, IBoot } from "egg";
 
 export default class FooBoot implements IBoot {
   private readonly app: Application;
@@ -34,9 +34,12 @@ export default class FooBoot implements IBoot {
   async serverDidReady() {
     const ctx = this.app.createAnonymousContext();
     ctx.runInBackground(async () => {
-      if (this.app.config.env !== 'local') {
-        ctx.logger.info('开始订阅 Order Book');
+      if (this.app.config.env !== "local") {
+        ctx.logger.info("开始订阅 Order Book");
         ctx.service.orderBook.subscribeToOrderBook();
+
+        ctx.logger.info("开始 message push");
+        ctx.service.messagePush.watchAccountAction();
       }
     });
 
