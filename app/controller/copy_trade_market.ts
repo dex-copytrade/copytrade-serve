@@ -1,9 +1,9 @@
 import { Controller } from "egg";
 
 const rankingRule = {
-  interval: { type: "int", require: true, allowEmpty: false },
-  current: { type: "int", require: true, allowEmpty: false },
-  pageSize: { type: "int", require: true, allowEmpty: false },
+  interval: { type: "int", require: false, allowEmpty: false },
+  current: { type: "int", require: false, allowEmpty: false },
+  pageSize: { type: "int", require: false, allowEmpty: false },
 };
 export default class CopyTradeMarketController extends Controller {
   public async tradeTalentRanking() {

@@ -8,9 +8,9 @@ module.exports = () => {
       await next();
     } else {
       ctx.body = {
-        code: 402,
+        code: 401,
         data: null,
-        message: 'token 必填',
+        message: 'owner 必填',
       };
       return;
     }

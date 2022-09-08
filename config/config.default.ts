@@ -33,7 +33,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1661496474724_8957";
 
   // add your egg config in here
-  config.middleware = ["responseTime", "errorHandler", "error", 'jwt'];
+  config.middleware = ["responseTime", "errorHandler"];
 
   // 配置不生效
   // config.responseTime = {

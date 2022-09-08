@@ -5,7 +5,8 @@ export default class HomeController extends Controller {
   public async index() {
     const { ctx } = this;
     // await ctx.render("home.ejs");
-    ctx.body = await ctx.service.settlePerp.getAllPnl();
+    // ctx.body = await ctx.service.settlePerp.getAllPnl();
+    ctx.body = await ctx.service.gmail.init()
   }
 
   public async info() {

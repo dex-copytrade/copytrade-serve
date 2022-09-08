@@ -8,6 +8,7 @@ type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
 import ExportAccountTradeHistory from '../../../app/service/accountTradeHistory';
 import ExportAccountPNLStatistics from '../../../app/service/account_PNL_statistics';
+import ExportGmail from '../../../app/service/gmail';
 import ExportInfo from '../../../app/service/info';
 import ExportLark from '../../../app/service/lark';
 import ExportOrderBook from '../../../app/service/orderBook';
@@ -22,6 +23,7 @@ declare module 'egg' {
   interface IService {
     accountTradeHistory: AutoInstanceType<typeof ExportAccountTradeHistory>;
     accountPNLStatistics: AutoInstanceType<typeof ExportAccountPNLStatistics>;
+    gmail: AutoInstanceType<typeof ExportGmail>;
     info: AutoInstanceType<typeof ExportInfo>;
     lark: AutoInstanceType<typeof ExportLark>;
     orderBook: AutoInstanceType<typeof ExportOrderBook>;

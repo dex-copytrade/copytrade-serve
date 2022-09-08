@@ -6,7 +6,7 @@ import { Service } from "egg";
 export default class SubList extends Service {
   public async create({ phoneNumber, email, account }) {
     const { ctx } = this;
-    const owner = ctx.state.address;
+    const owner = ctx.state.owner;
     const params = {
       phoneNumber,
       email,
@@ -18,13 +18,13 @@ export default class SubList extends Service {
 
   public async info() {
     const { ctx } = this;
-    const owner = ctx.state.address;
+    const owner = ctx.state.owner;
     return await ctx.model.SubList.findOne({ owner });
   }
 
   public async cancelSub(account) {
     const { ctx } = this;
-    const owner = ctx.state.address;
+    const owner = ctx.state.owner;
     return await ctx.model.SubList.updateOne(
       { owner },
       { $pull: { subAccount: { $in: [account] } } }
@@ -33,7 +33,7 @@ export default class SubList extends Service {
 
   public async addSub(account) {
     const { ctx } = this;
-    const owner = ctx.state.address;
+    const owner = ctx.state.owner;
     return await ctx.model.SubList.updateOne(
       { owner },
       { $addToSet: { subAccount: [account] } }
