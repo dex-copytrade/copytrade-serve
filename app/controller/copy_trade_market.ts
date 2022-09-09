@@ -9,7 +9,7 @@ const rankingRule = {
 export default class CopyTradeMarketController extends Controller {
   public async tradeTalentRanking() {
     const { ctx } = this;
-    ctx.validate(rankingRule, ctx.request.body);
+    // ctx.validate(rankingRule, ctx.request.body);
     const data = await ctx.service.tradeTalent.queryList();
     ctx.body = data;
   }
