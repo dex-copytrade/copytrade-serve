@@ -79,4 +79,9 @@ export default class SubList extends Service {
   
     return list
   }
+
+  public async getAll() {
+    const { ctx } = this;
+    return await ctx.model.SubList.find()
+  }
 }

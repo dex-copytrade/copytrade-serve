@@ -34,6 +34,8 @@ export default class FooBoot implements IBoot {
   async serverDidReady() {
     const ctx = this.app.createAnonymousContext();
     ctx.runInBackground(async () => {
+      ctx.service.messagePush.watchAccountAction();
+      ctx.service.messagePush.updateAccount();
       if (this.app.config.env !== "local") {
         ctx.logger.info("开始订阅 Order Book");
         ctx.service.orderBook.subscribeToOrderBook();

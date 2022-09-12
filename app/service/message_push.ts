@@ -44,7 +44,25 @@ class SimpleWebsocketClient {
   }
 }
 
+let subMap = new Map<string, string>();
+
 export default class MessagePushService extends Service {
+  public async updateAccount() {
+    const { ctx } = this;
+    const all = await ctx.service.subList.getAll()
+    const map = new Map<string, string>()
+    for await (const iterator of all) {
+      if(iterator.subAccount){
+        for (const account of iterator.subAccount) {
+          map.set(account, iterator.email)
+        }
+      }
+      
+    }
+    subMap = map
+    // console.log(subMap)
+  }
+
   public async watchAccountAction() {
     try {
       const WS_ENDPOINT = "wss://api.mango-bowl.com/v1/ws";
@@ -58,19 +76,28 @@ export default class MessagePushService extends Service {
       };
 
       await wsClient.send(subscribeRequest);
+      const accounts: Array<any> = [];
 
       for await (const message of wsClient.stream()) {
-        if (message.type === "open") {
-          this.ctx.logger.info(`下单: ${message.account}`);
+        if((message.type === "open" || message.type === "done")  && subMap.get(message.account)){
+          // console.log(message)
+        }else if((message.type === "open" || message.type === "done")){
+          accounts.push({
+            account: message.account,
+          });
         }
-        if (message.type === "done") {
-          if (message.reason === "canceled") {
-            this.ctx.logger.info(`取消下单: ${message.account}`);
-          } else if (message.reason === "filled") {
-            this.ctx.logger.info(`成交: ${message.account}`);
-          }
-        }
+        // if (message.type === "open") {
+        //   this.ctx.logger.info(`下单: ${message.account}`);
+        // }
+        // if (message.type === "done") {
+        //   if (message.reason === "canceled") {
+        //     this.ctx.logger.info(`取消下单: ${message.account}`);
+        //   } else if (message.reason === "filled") {
+        //     this.ctx.logger.info(`成交: ${message.account}`);
+        //   }
+        // }
       }
+      this.ctx.service.trackingAccount.create(accounts);
     } catch (error) {
       this.ctx.logger.error(`MessagePushService:${error}`);
     }
