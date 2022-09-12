@@ -1,11 +1,13 @@
 import { Service } from "egg";
 import nodemailer from "nodemailer";
 
+let transporter: any = null;
+
 // QPMEXOOQJIDSRHWA
 
 export default class Gmail extends Service {
-  public async init() {
-    let transporter = nodemailer.createTransport({
+  private async init() {
+    transporter = nodemailer.createTransport({
       // host: 'smtp.ethereal.email',
       host: 'smtp.163.com',
       port: 465,
@@ -16,15 +18,22 @@ export default class Gmail extends Service {
         pass: "QPMEXOOQJIDSRHWA",
       },
     });
-    const mailOptions = {
+
+  }
+
+  public async sendMail(title, content) {
+    if(!transporter) {
+      this.init()
+    }
+
+        const mailOptions = {
       from: '"Bitverse DEX Copytrading" <wq599263163@163.com>', // sender address
       to: "hebuzuizailai@gmail.com", // list of receivers
-      subject: "Hello", // Subject line
+      subject: title, // Subject line
       // 发送text或者html格式
       // text: 'Hello world?', // plain text body
-      html: "<h1>Hello world</h1>", // html body
+      html: content, // html body
     };
-
     // send mail with defined transport object
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -33,5 +42,6 @@ export default class Gmail extends Service {
       // console.log('Message sent: %s', info.messageId);
       console.log(info);
     });
+
   }
 }
