@@ -13,6 +13,7 @@ export default class SubList extends Service {
       subAccount: [account],
       owner,
     };
+    console.log(params, 'paramsparams')
     return await ctx.model.SubList.create(params);
   }
 
@@ -65,8 +66,17 @@ export default class SubList extends Service {
   }
   public async list() {
     const { ctx } = this;
-    const data = await ctx.model.SubList.find({});
-
-    return data;
+    const owner = ctx.state.owner;
+    const data = await ctx.model.SubList.findOne({owner});
+    let list:Array<any> = [];
+    if(data.subAccount){
+      for await (const iterator of data.subAccount) {
+        const _list = await ctx.service.tradeTalent.queryAggregateInfoByAccount(iterator)
+        list.push(_list);
+      }
+      
+    }
+  
+    return list
   }
 }
