@@ -115,9 +115,10 @@ export default class MessagePushService extends Service {
             //   eventTimestamp: '2022-09-12T08:45:41.000Z',
             //   expiryTimestamp: '2022-09-12T08:45:49.000Z'
             // }
-            ctx.service.gmail.sendMail('交易达人操作', `【${message.account}】与${message.timestamp}，以单价【${message.price}】 ${message.side}【${message.market}】永续合约，挂单【${message.size}】个`)
+            // console.log(subMap.get(message.account))
+            ctx.service.gmail.sendMail('交易达人操作', `【${message.account}】与${message.timestamp}，以单价【${message.price}】 ${message.side}【${message.market}】永续合约，挂单【${message.size}】个`, subMap.get(message.account))
             this.ctx.logger.info(`下单: ${message.account}`);
-            ctx.service.lark.sendChatMessage(`【${message.account}】与${message.timestamp}，以单价【${message.price}】 ${message.side}【${message.market}】永续合约，挂单【${message.size}】个`);
+            ctx.service.lark.sendChatMessage(`${subMap.get(message.account)} --->【${message.account}】与${message.timestamp}，以单价【${message.price}】 ${message.side}【${message.market}】永续合约，挂单【${message.size}】个`);
           }
           if (message.type === "done") {
             if (message.reason === "canceled") {

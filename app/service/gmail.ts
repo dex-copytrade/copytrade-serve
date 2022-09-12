@@ -21,14 +21,14 @@ export default class Gmail extends Service {
 
   }
 
-  public async sendMail(title, content) {
+  public async sendMail(title, content, to) {
     if(!transporter) {
       this.init()
     }
 
         const mailOptions = {
       from: '"Bitverse DEX Copytrading" <wq599263163@163.com>', // sender address
-      to: "hebuzuizailai@gmail.com", // list of receivers
+      to, // list of receivers
       subject: title, // Subject line
       // 发送text或者html格式
       // text: 'Hello world?', // plain text body

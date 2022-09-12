@@ -13,7 +13,7 @@ export default class SubList extends Service {
       subAccount: [account],
       owner,
     };
-    ctx.service.gmail.sendMail('您已成功订阅交易达人', `您已成功订阅交易达人【${account}】，该交易达人的交易记录将会通知到您`)
+    ctx.service.gmail.sendMail('您已成功订阅交易达人', `您已成功订阅交易达人【${account}】，该交易达人的交易记录将会通知到您`, email)
     return await ctx.model.SubList.create(params);
   }
 
@@ -26,7 +26,8 @@ export default class SubList extends Service {
   public async cancelSub(account) {
     const { ctx } = this;
     const owner = ctx.state.owner;
-    ctx.service.gmail.sendMail('您已取消订阅', `您已取消订阅交易达人【${account}】`)
+    const info = await ctx.model.SubList.findOne({ owner }) || {}
+    ctx.service.gmail.sendMail('您已取消订阅', `您已取消订阅交易达人【${account}】`, info.email)
     return await ctx.model.SubList.updateOne(
       { owner },
       { $pull: { subAccount: { $in: [account] } } }
@@ -36,7 +37,8 @@ export default class SubList extends Service {
   public async addSub(account) {
     const { ctx } = this;
     const owner = ctx.state.owner;
-    ctx.service.gmail.sendMail('您已成功订阅交易达人', `您已成功订阅交易达人【${account}】，该交易达人的交易记录将会通知到您`)
+    const info = await ctx.model.SubList.findOne({ owner }) || {}
+    ctx.service.gmail.sendMail('您已成功订阅交易达人', `您已成功订阅交易达人【${account}】，该交易达人的交易记录将会通知到您`, info.email)
     return await ctx.model.SubList.updateOne(
       { owner },
       { $addToSet: { subAccount: [account] } }
