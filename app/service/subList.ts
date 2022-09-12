@@ -4,7 +4,7 @@ import { Service } from "egg";
  * Test Service
  */
 export default class SubList extends Service {
-  public async create({ phoneNumber, email, account }) {
+  public async create({ phoneNumber = '--', email, account }) {
     const { ctx } = this;
     const owner = ctx.state.owner;
     const params = {
