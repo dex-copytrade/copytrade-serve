@@ -117,6 +117,7 @@ export default class MessagePushService extends Service {
             // }
             ctx.service.gmail.sendMail('交易达人操作', `【${message.account}】与${message.timestamp}，以单价【${message.price}】 ${message.side}【${message.market}】永续合约，挂单【${message.size}】个`)
             this.ctx.logger.info(`下单: ${message.account}`);
+            ctx.service.lark.sendChatMessage(`【${message.account}】与${message.timestamp}，以单价【${message.price}】 ${message.side}【${message.market}】永续合约，挂单【${message.size}】个`);
           }
           if (message.type === "done") {
             if (message.reason === "canceled") {
